@@ -115,7 +115,21 @@
         <h2 class="text-gray-800 font-semibold tracking-wide mt-4">
           Your Icon Sets
         </h2>
-        <section class="overflow-y-scroll"></section>
+        <section class="overflow-y-scroll">
+          <ul
+            v-if="
+              this.icons.length &&
+                fileTree(this.icons[0].storage).children.length
+            "
+          >
+            <li
+              v-for="(directory, index) in fileTree(this.icons[0].storage)
+                .children"
+              :key="index"
+              v-text="directory.name"
+            ></li>
+          </ul>
+        </section>
         <section class="mt-auto mb-2 relative">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
             <svg
@@ -197,6 +211,7 @@
 <script>
 import { debounce } from "lodash";
 import { ipcRenderer } from "electron";
+import directoryTree from "directory-tree";
 import CustomizerPanel from "@/components/CustomizerPanel.vue";
 import EmptyIllustration from "@/components/EmptyIllustration.vue";
 
@@ -275,6 +290,10 @@ export default {
     select(icon) {
       this.selected = true;
       this.selectedIcon = icon;
+    },
+
+    fileTree(path) {
+      return directoryTree(path, { extensions: /\.svg/ });
     }
   }
 };

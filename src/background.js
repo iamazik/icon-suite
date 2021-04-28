@@ -275,6 +275,7 @@ async function getAllSvgIcons(path) {
         size: fs.statSync(item).size,
         date: fs.statSync(item).birthtime,
         author: Path.basename(Path.dirname(item)),
+        storage: `${app.getPath("userData")}/Icons`,
         path: Path.join(Path.dirname(item), Path.basename(item)),
         icon: await optimizeSvg(fs.readFileSync(item).toString(), item)
       });
